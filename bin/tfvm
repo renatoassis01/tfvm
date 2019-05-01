@@ -2,7 +2,7 @@
 # Basic terraform version manager
 
 BASE_URL_TF='https://releases.hashicorp.com/terraform/' 
-VERSION_TFVM='0.0.1'
+VERSION_TFVM='0.1.0'
 STORE=""
 
 function tfvm_get_os() {
