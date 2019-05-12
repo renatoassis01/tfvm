@@ -10,7 +10,7 @@ pool:
 steps:
  - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
-             unzip /tmp/bats.zip 
+             unzip /tmp/bats.zip -d /tmp
              mv /tmp/bats-0.4.0 /tmp/bats
              export BATS_ROOT=/tmp/bats/bin:$PATH  
    displayName: 'Install bats'
