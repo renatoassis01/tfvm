@@ -90,7 +90,7 @@ function use_tf() {
         echo "Activated Terraform version $latest"
       fi
     else
-      echo "Version invalid or not installed".
+      echo "Version invalid or not installed"
     fi
   else
 
