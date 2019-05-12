@@ -68,7 +68,6 @@ function ls-local() {
   echo -e "Installed versions:"
   command ls "$TFVMDIR"/versions/
   echo  
-  
 
 }
 
@@ -86,7 +85,7 @@ function use_tf() {
         if ! [ -d "$TFVMDIR/bin/shims/" ]; then 
             mkdir -p "$TFVMDIR/bin/shims/"
         fi
-        rm -rf "${TFVMDIR:?}/bin/shims/*"
+        rm -rf $TFVMDIR/bin/shims/*
         cp -r "$TFVMDIR/versions/$latest/." "$TFVMDIR"/bin/shims
         echo "Activated Terraform version $latest"
       fi
