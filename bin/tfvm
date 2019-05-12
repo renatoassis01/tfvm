@@ -1,10 +1,20 @@
 #!/bin/bash
 # Basic terraform version manager
 
-set -e
+set \
+  -o nounset \
+  -o pipefail \
+  -o errexit
+
 BASE_URL_TF='https://releases.hashicorp.com/terraform/'
-VERSION_TFVM='0.2.0'
+VERSION_TFVM='0.2.2'
 STORE=""
+
+if [ -z "$TFVMDIR" ]; then
+     echo "Set the \$TFVMDIR environment variable"
+     exit
+fi
+
 
 function tfvm_get_os() {
   local TFVM_UNAME
@@ -56,13 +66,9 @@ function print_version_tf() {
 function ls-local() {
 
   echo -e "Installed versions:"
-  ls "$TFVMDIR"/versions/
+  command ls "$TFVMDIR"/versions/
   echo  
-  echo -e "Version used:"
-  if [ -x "$(command -v "$TFVMDIR"/bin/terraform)" ]; then
-   echo -e "$("$TFVMDIR"/bin/terraform -v)" | cut -c 12-18
-  fi
-  type ls &>/dev/null
+  
 
 }
 
@@ -72,12 +78,16 @@ function use_tf() {
 
     # shellcheck disable=SC2010
     # shellcheck disable=SC2012
-    latest=$(ls -1 "$TFVMDIR/versions/" | sort -V |  grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
+    latest=$(command ls -1 "$TFVMDIR/versions/" | sort -V |  grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
     
     if [ -n "$latest" ]; then
 
       if [ -f "$TFVMDIR"/versions/"$latest"/terraform ]; then
-        cp "$TFVMDIR"/versions/"$latest"/terraform "$TFVMDIR"/bin/terraform
+        if ! [ -d "$TFVMDIR/bin/shims/" ]; then 
+            mkdir -p "$TFVMDIR/bin/shims/"
+        fi
+        rm -rf "${TFVMDIR:?}/bin/shims/*"
+        cp -r "$TFVMDIR/versions/$latest/." "$TFVMDIR"/bin/shims
         echo "Activated Terraform version $latest"
       fi
     else
@@ -86,7 +96,11 @@ function use_tf() {
   else
 
     if [ -f "$TFVMDIR"/versions/"$1"/terraform ]; then
-      cp "$TFVMDIR"/versions/"$1"/terraform "$TFVMDIR"/bin/terraform
+      if ! [ -d "$TFVMDIR/bin/shims/" ]; then 
+            mkdir -p "$TFVMDIR/bin/shims/"
+        fi
+      rm -rf "${TFVMDIR:?}/bin/shims/*"
+      cp -r "$TFVMDIR/versions/$1/." "$TFVMDIR/bin/shims"
       echo "Activated Terraform version $1"
     else
       echo "Version invalid or not installed".
@@ -97,13 +111,13 @@ function use_tf() {
 
 function install_tf() {
   local file_tf=terraform_${1}_${OS_TFVM}_${ARCH_TFVM}.zip
-  if [ -f "$TFVMDIR"/versions/"$1"/terraform ]; then
+  if [ -f "$TFVMDIR/versions/$1/terraform" ]; then
     echo "Use: tfvm use $1"
   else
     for i in $STORE; do
       if [ "$i" == "$1" ]; then
         if [ -x "$(command -v curl)" ]; then
-          curl -# --progress-bar --remote-name --url "$BASE_URL_TF$1/$file_tf"
+          curl -# --progress-bar --url "$BASE_URL_TF$1/$file_tf"  -o "$TFVMDIR/$file_tf"
         elif [ -x "$(command -v wget)" ]; then
           wget -O "$TFVMDIR/$file_tf" "$BASE_URL_TF$1/$file_tf" -q --show-progress --progress=bar:force
         else
@@ -115,16 +129,19 @@ function install_tf() {
             mkdir -p "$TFVMDIR/versions/"
           fi
           mkdir -p "$TFVMDIR/versions/$1/"
-          unzip "$TFVMDIR/$file_tf" -d "${TFVMDIR}/versions/$1/" && rm -rf "$TFVMDIR/$file_tf"
+          unzip "$TFVMDIR/$file_tf" -d "${TFVMDIR}/versions/$1/" 
+          if [ -f "$TFVMDIR/$file_tf" ]; then
+             rm -rf "${TFVMDIR:?}/${file_tf:?}"
+          fi   
           echo "To activate this version use: "
           echo "tfvm use $1"
           exit 0
         fi
         break
       fi
-    done
-    echo "Version $1 invalid"!
-    echo "Use: tfvm ls-remote and install a version listed"
+     done
+   echo "Version $1 invalid"!
+   echo "Use: tfvm ls-remote and install a version listed"  
   fi
 }
 

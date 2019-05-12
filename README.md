@@ -15,9 +15,16 @@ Add to your profile (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`
 ```sh
 #tfvm
 export TFVMDIR=$HOME/.tfvm
-export PATH=$TFVMDIR/bin:$PATH
+export PATH=$TFVMDIR/bin:$TFVMDIR/bin/shims:$PATH
 ```
+
 **Note:**  source you profile eg: source .bashrc
+
+```sh
+ tfvm -v
+ Basic Terraform version manager (version: x.x.x)
+
+```
 
 ## How to use:
 
@@ -42,3 +49,8 @@ Project based [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 
 
 **Note:**  tested only linux
+
+
+## License
+
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
