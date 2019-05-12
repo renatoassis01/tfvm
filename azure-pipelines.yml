@@ -10,7 +10,8 @@ pool:
 steps:
  - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
-             export ALLOW_RUNASROOT=1; mkdir /usr/local/bin/bats && unzip /tmp/bats.zip -d /usr/local/bin/bats  
+             mkdir unzip /tmp/bats.zip 
+             export BATS=/tmp/bats/bin:$PATH  
    displayName: 'Install bats'
  
  - script: command -v bats 
