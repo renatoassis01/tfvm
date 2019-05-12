@@ -1,3 +1,6 @@
+variables:
+    bats: '/tmp/bats/bin/bats' 
+
 trigger:
 - master
 
@@ -12,10 +15,9 @@ steps:
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
              unzip /tmp/bats.zip -d /tmp
              mv /tmp/bats-0.4.0 /tmp/bats
-             export BATS_ROOT=/tmp/bats/bin:$PATH  
    displayName: 'Install bats'
    
- - script: command -v bats 
+ - script: $(bats) -v  
    displayName: 'check bats'
 
  - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
