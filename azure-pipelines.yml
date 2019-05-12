@@ -8,7 +8,10 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
- - script: curl https://github.com/sstephenson/bats/archive/v0.4.0.zip -o bats.zip && unzip bats.zip -d bats && cp -r bats /bin 
+ - script: |
+            curl https://github.com/sstephenson/bats/archive/v0.4.0.zip -o /tmp/bats.zip \ 
+            && mkdir /usr/local/bin/bats \
+            && unzip /tmp/bats.zip -d /usr/local/bin/bats  
    displayName: 'Install bats'
    workingDirectory: '/tmp' 
  
