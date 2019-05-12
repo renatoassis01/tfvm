@@ -1,6 +1,6 @@
 # Basic Terraform version manager
 
-[![Build Status](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_apis/build/status/renatoassis01.tfvm?branchName=master)](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_build/latest?definitionId=1&branchName=master)it
+[![Build Status](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_apis/build/status/renatoassis01.tfvm?branchName=master)](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_build/latest?definitionId=1&branchName=master)
 
 ## Dependencies
 
