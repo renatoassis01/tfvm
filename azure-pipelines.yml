@@ -1,15 +1,20 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
+- master
+
+pr:
 - master
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
-  displayName: 'Run shellcheck'
+ - script: curl https://github.com/sstephenson/bats/archive/v0.4.0.zip -o bats.zip && unzip bats.zip -d bats && cp -r bats /bin 
+   displayName: 'Install bats'
+   workingDirectory: '/tmp' 
+ 
+ - script: command -v bats 
+   displayName: 'check bats'
+
+ - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
+   displayName: 'Run shellcheck'
 
