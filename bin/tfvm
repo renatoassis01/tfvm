@@ -18,7 +18,7 @@ fi
 
 function tfvm_get_os() {
   local TFVM_UNAME
-  TFVM_UNAME="$(uname -a)"
+  TFVM_UNAME="$(command uname -a)"
   local TFVM_OS
   case "${TFVM_UNAME}" in
   Linux\ *) TFVM_OS="linux" ;;
@@ -31,7 +31,7 @@ function tfvm_get_os() {
 
 function tfvm_get_arch() {
   local TFVM_UNAME
-  TFVM_UNAME="$(uname -m)"
+  TFVM_UNAME="$(command uname -m)"
   local TFVM_ARCH
   case "${TFVM_UNAME}" in
   arm*) TFVM_ARCH="arm" ;;
