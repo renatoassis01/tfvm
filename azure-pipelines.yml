@@ -9,12 +9,9 @@ pool:
 
 steps:
  - script: | 
-             export ALLOW_RUNASROOT=1
-             curl https://github.com/sstephenson/bats/archive/v0.4.0.zip -o /tmp/bats.zip 
-             mkdir /usr/local/bin/bats 
-             unzip /tmp/bats.zip -d /usr/local/bin/bats  
+             wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
+             export ALLOW_RUNASROOT=1; mkdir /usr/local/bin/bats && unzip /tmp/bats.zip -d /usr/local/bin/bats  
    displayName: 'Install bats'
-   workingDirectory: '/tmp' 
  
  - script: command -v bats 
    displayName: 'check bats'
