@@ -76,8 +76,6 @@ function use_tf() {
   local latest
   if [ "$1" == "latest" ]; then
 
-    # shellcheck disable=SC2010
-    # shellcheck disable=SC2012
     latest=$(command ls -1 "$TFVMDIR/versions/" | sort -V |  grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
     
     if [ -n "$latest" ]; then
