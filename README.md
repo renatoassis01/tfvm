@@ -1,6 +1,7 @@
 # Basic Terraform version manager
 
 [![Build Status](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_apis/build/status/renatoassis01.tfvm?branchName=master)](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_build/latest?definitionId=1&branchName=master)
+[![platform](https://img.shields.io/badge/platform-linux-9cf.svg)](https://img.shields.io/badge/platform-linux-9cf.svg)
 
 ## Dependencies
 
@@ -40,7 +41,30 @@ tfvm ls                                      # List all installed versions
 
 Project based [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 
-### Roadmap
+
+### Development
+
+   Dependencies: 
+   
+   - shellcheck: [Shell script analysis tool](https://www.shellcheck.net/) 
+   - Bats: [Bash Automated Testing System](https://github.com/sstephenson/bats)
+
+   
+   run shellcheck:
+
+   ```sh
+       shellcheck ./bin/tfvm
+   ```
+   
+   
+   run test:
+
+   ```sh
+     bats ./tests/test.bats
+   ```
+
+
+### Todo
 
 - [x] Basic version funcional
 - [x] Implement the option to use the latest version, using the `latest` (tfvm use latest) flag
