@@ -1,5 +1,6 @@
 # Basic Terraform version manager
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e54dd13e95b74a3d897cb89c7dd836a2)](https://app.codacy.com/app/renatoassis/tfvm?utm_source=github.com&utm_medium=referral&utm_content=renatoassis01/tfvm&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_apis/build/status/renatoassis01.tfvm?branchName=master)](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_build/latest?definitionId=1&branchName=master)
 [![platform](https://img.shields.io/badge/platform-linux-9cf.svg)](https://img.shields.io/badge/platform-linux-9cf.svg)
 
