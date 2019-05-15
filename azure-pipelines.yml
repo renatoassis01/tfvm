@@ -1,24 +1,30 @@
 variables:
     bats: '/tmp/bats/bin/bats' 
-
+    TFVMDIR: '$(Build.SourcesDirectory)'
 trigger:
 - master
 
 pr:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
- - script: | 
+jobs:
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+   - script: |
+              echo '##vso[task.prependpath]$(TFVMDIR)/bin'
+              echo '##vso[task.prependpath]$(TFVMDIR)/bin/shims'
+              
+   - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
              unzip /tmp/bats.zip -d /tmp
              mv /tmp/bats-0.4.0 /tmp/bats
-   displayName: 'Install bats'
+             echo $PATH
+     displayName: 'Install bats'
    
- - script: $(bats) -v  
-   displayName: 'check bats'
+   - script: $(bats) -v  
+     displayName: 'check bats'
 
- - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
-   displayName: 'Run shellcheck'
+   - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
+     displayName: 'Run shellcheck'
