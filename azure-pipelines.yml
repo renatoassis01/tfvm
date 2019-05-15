@@ -32,5 +32,3 @@ jobs:
 
    - script: 'bats ./tests/test.bats'  
      displayName: 'Run tests'
-
-   
