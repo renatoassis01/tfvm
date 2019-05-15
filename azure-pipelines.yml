@@ -1,5 +1,6 @@
 variables:
     bats: '/tmp/bats/bin/bats' 
+    BATS_ROOT: '/tmp/bats' 
     TFVMDIR: '$(Build.SourcesDirectory)'
 trigger:
 - master
@@ -15,7 +16,7 @@ jobs:
    - script: |
               echo '##vso[task.prependpath]$(TFVMDIR)/bin'
               echo '##vso[task.prependpath]$(TFVMDIR)/bin/shims'
-            
+              echo '##vso[task.prependpath]$(BATS_ROOT)/bin/bats'
      displayName: 'add tfvm and bats path'
    - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
