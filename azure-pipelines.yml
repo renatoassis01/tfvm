@@ -16,11 +16,11 @@ jobs:
               echo '##vso[task.prependpath]$(TFVMDIR)/bin'
               echo '##vso[task.prependpath]$(TFVMDIR)/bin/shims'
               
+     displayName: 'add tfvm'
    - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
              unzip /tmp/bats.zip -d /tmp
              mv /tmp/bats-0.4.0 /tmp/bats
-             echo $PATH
      displayName: 'Install bats'
    
    - script: $(bats) -v  
@@ -28,3 +28,6 @@ jobs:
 
    - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
      displayName: 'Run shellcheck'
+
+   - script: '$(bats) ./tests/test.bats'  
+     displayName: 'Run tests'
