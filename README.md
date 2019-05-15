@@ -70,8 +70,8 @@ Project based [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 - [x] Basic version funcional
 - [x] Implement the option to use the latest version, using the `latest` (tfvm use latest) flag
 - [ ] Implement the option to install the latest version by using the `latest` (tfvm install latest) flag 
-- [ ] Test units
-- [ ] CD/CI
+- [x] Test units
+- [x] CD/CI
 - [ ] Suport OSX
 
 
