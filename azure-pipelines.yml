@@ -1,6 +1,5 @@
 variables:
     bats: '/tmp/bats/bin/bats' 
-    BATS_ROOT: '/tmp/bats' 
     TFVMDIR: '$(Build.SourcesDirectory)'
 trigger:
 - master
@@ -16,14 +15,12 @@ jobs:
    - script: |
               echo '##vso[task.prependpath]$(TFVMDIR)/bin'
               echo '##vso[task.prependpath]$(TFVMDIR)/bin/shims'
-              echo '##vso[task.prependpath]$(BATS_ROOT)/bin/bats'
-     displayName: 'add tfvm and bats path'
+              
+     displayName: 'add tfvm'
    - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
              unzip /tmp/bats.zip -d /tmp
              mv /tmp/bats-0.4.0 /tmp/bats
-             echo $(PATH)
-             
      displayName: 'Install bats'
    
    - script: $(bats) -v  
