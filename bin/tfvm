@@ -7,12 +7,12 @@ set \
 	-o errexit
 
 BASE_URL_TF='https://releases.hashicorp.com/terraform/'
-VERSION_TFVM='0.2.2'
+VERSION_TFVM='0.3.0'
 STORE=""
 
 if [ -z "$TFVMDIR" ]; then
 	echo "Set the \$TFVMDIR environment variable"
-	exit
+	exit 1
 fi
 
 function tfvm_get_os() {
@@ -39,6 +39,8 @@ function tfvm_get_arch() {
 	esac
 	echo -e "$TFVM_ARCH"
 }
+
+
 
 OS_TFVM=$(tfvm_get_os)
 ARCH_TFVM=$(tfvm_get_arch)
