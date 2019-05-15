@@ -15,7 +15,7 @@ jobs:
    - script: |
               echo '##vso[task.prependpath]$(TFVMDIR)/bin'
               echo '##vso[task.prependpath]$(TFVMDIR)/bin/shims'
-              echo '##vso[task.prependpath]$(TFVMDIR)/bin/bats'
+              echo '##vso[task.prependpath]$(BATS_ROOT)/bin/bats'
    - script: | 
              wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
              unzip /tmp/bats.zip -d /tmp
