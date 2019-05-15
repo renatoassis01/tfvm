@@ -26,7 +26,7 @@ jobs:
    - script: $(bats) -v  
      displayName: 'check bats'
 
-   - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm'
+   - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm; shellcheck bash_completion'
      displayName: 'Run shellcheck'
 
    - script: '$(bats) ./tests/test.bats'  
