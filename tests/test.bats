@@ -23,14 +23,14 @@ tf_version_invalid=0.0.0
 
 @test "testing use function" {
   tfvm use "$tf_install"
-  result="$(terraform -v | cut -c 12-17)"
+  result="$(terraform -v | cut -c 12-18)"
   [ "$result" == "$tf_install" ]
 }
 
 @test "testing use latest function" {
   tfvm install "$tf_install_botton"
   tfvm use latest
-  result="$(terraform -v | cut -c 12-17)"
+  result="$(terraform -v | cut -c 12-18)"
   [ "$result" == "$tf_install" ]
 }
 
