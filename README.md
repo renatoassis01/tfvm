@@ -40,7 +40,39 @@ tfvm use 0.11.13                             # Use a version installed
 tfvm ls                                      # List all installed versions
 ```                                     
 
-Project based [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
+
+## Bash completion
+
+Add to your profile (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`)
+
+```
+[[ -r $TFVMDIR/bash_completion ]] && \. $TFVMDIR/bash_completion
+
+```
+## Usage:
+
+> $ tfvm <kbd>Tab</kbd>
+
+```
+install    ls         ls-remote  use        -v         --version 
+```
+
+> $ tfvm install <kbd>Tab</kbd> <kbd>Tab</kbd> <kbd>Tab</kbd>
+
+```
+0.11.11  0.11.12  0.11.13  
+```
+
+> $ tfvm use <kbd>Tab</kbd> <kbd>Tab</kbd> <kbd>Tab</kbd>
+
+```
+0.10.0   0.11.13  latest  
+```
+
+**Note:**  source you profile eg: source .bashrc
+
+
+Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 
 
 ### Development
@@ -70,13 +102,11 @@ Project based [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 - [x] Basic version funcional
 - [x] Implement the option to use the latest version, using the `latest` (tfvm use latest) flag
 - [ ] Implement the option to install the latest version by using the `latest` (tfvm install latest) flag 
+- [ ] Bash Completion
+- [ ] Zsh Completion
 - [x] Test units
 - [x] CD/CI
 - [ ] Suport OSX
-
-
-**Note:**  tested only linux
-
 
 ## License
 
