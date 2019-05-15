@@ -1,3 +1,4 @@
+#!/usr/bin/env bats 
 tf_install=0.11.13
 tf_install_botton=0.10.0
 tf_use_ver_invalid="Version invalid or not installed."
