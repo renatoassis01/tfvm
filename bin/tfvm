@@ -48,11 +48,9 @@ ARCH_TFVM=$(tfvm_get_arch)
 function get_list_version_tf_remote() {
 
 	if [ -x "$(command -v curl)" ]; then
-		STORE=$(curl -s $BASE_URL_TF | grep -Po '(?<=href="/terraform/)[^"]*' | sed 's/.$//')
-
+		  STORE=$(curl -s $BASE_URL_TF  | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	elif [ -x "$(command -v wget)" ]; then
-		STORE=$(wget -SO- -T 1 -t 1 $BASE_URL_TF 2>&1 | grep -Po '(?<=href="/terraform/)[^"]*' | sed 's/.$//')
-
+	    STORE=$(curl -s $BASE_URL_TF  | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	else
 		echo "You not have curl or wget installed."
 	fi
@@ -66,10 +64,13 @@ function print_version_tf() {
 
 function ls-local() {
 
-	echo -e "Installed versions:"
-	command ls "$TFVMDIR"/versions/
-	echo
-
+	if [ -d "$TFVMDIR"/versions/ ]; then
+	   echo -e "Installed versions:"
+	   command ls "$TFVMDIR"/versions/
+	   echo
+	else
+	  echo -e "You not have versions installed."
+    fi
 }
 
 function use_tf() {
@@ -114,6 +115,7 @@ function install_tf() {
 	else
 		for i in $STORE; do
 			if [ "$i" == "$1" ]; then
+			 echo $file_tf
 				if [ -x "$(command -v curl)" ]; then
 					curl -# --progress-bar --url "$BASE_URL_TF$1/$file_tf" -o "$TFVMDIR/$file_tf"
 				elif [ -x "$(command -v wget)" ]; then
