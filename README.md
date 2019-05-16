@@ -2,7 +2,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e54dd13e95b74a3d897cb89c7dd836a2)](https://app.codacy.com/app/renatoassis/tfvm?utm_source=github.com&utm_medium=referral&utm_content=renatoassis01/tfvm&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_apis/build/status/renatoassis01.tfvm?branchName=master)](https://dev.azure.com/renatoassis/Basic%20Terraform%20version%20manager/_build/latest?definitionId=1&branchName=master)
-[![platform](https://img.shields.io/badge/platform-linux-9cf.svg)](https://img.shields.io/badge/platform-linux-9cf.svg)
+[![platform](https://img.shields.io/badge/platform-linux%20%7C%20macosx-9cf.svg)](https://img.shields.io/badge/platform-linux%20%7C%20macosx-9cf.svg)
 
 ## Dependencies
 
@@ -22,7 +22,7 @@ export TFVMDIR=$HOME/.tfvm
 export PATH=$TFVMDIR/bin:$TFVMDIR/bin/shims:$PATH
 ```
 
-**Note:**  source you profile eg: source .bashrc
+> **Note:**  source you profile eg: source .bashrc
 
 ```sh
  tfvm -v
@@ -49,6 +49,8 @@ Add to your profile (`~/.bash_profile`, `~/.zshrc`, `~/.profile`, or `~/.bashrc`
 [[ -r $TFVMDIR/bash_completion ]] && \. $TFVMDIR/bash_completion
 
 ```
+> **Note:**  source you profile eg: source .bashrc
+
 ## Usage:
 
 > $ tfvm <kbd>Tab</kbd>
@@ -68,9 +70,6 @@ install    ls         ls-remote  use        -v         --version
 ```
 0.10.0   0.11.13  latest  
 ```
-
-**Note:**  source you profile eg: source .bashrc
-
 
 Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 
@@ -106,7 +105,7 @@ Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 - [x] Zsh Completion
 - [x] Test units
 - [x] CD/CI
-- [ ] Suport OSX
+- [x] Suport OSX
 
 ## License
 
