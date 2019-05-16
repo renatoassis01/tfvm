@@ -8,21 +8,21 @@ _tfvm() {
 
   case "${prev}" in
   install)
-    latest_versions=$(tfvm ls-remote | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -3)
+    latest_versions="$(tfvm ls-remote | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -3)"
     local running="${latest_versions:-""}"
-    COMPREPLY=($(compgen -W "${running}" -- "${cur}"))
+    COMPREPLY=("$(compgen -W "${running}" -- "${cur}")")
     return 0
     ;;
   use)
     latest_versions=$(tfvm ls | grep -Eo '^[0-9\.]*')
     local running="${latest_versions:-""} latest"
-    COMPREPLY=($(compgen -W "${running}" -- "${cur}"))
+    COMPREPLY=("$(compgen -W "${running}" -- "${cur}")")
     return 0
     ;;
   *) ;;
   esac
 
-  COMPREPLY=($(compgen -W "${opts}" -- "${cur}"))
+  COMPREPLY=("$(compgen -W "${opts}" -- "${cur}")")
   return 0
 
 }

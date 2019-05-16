@@ -31,3 +31,24 @@ jobs:
 
    - script: '$(bats) ./tests/test.bats'  
      displayName: 'Run tests'
+
+- job: macOS
+  pool:
+    vmImage: 'macOS 10.13'
+  steps:
+   - script: |
+              echo '##vso[task.prependpath]$(TFVMDIR)/bin'
+              echo '##vso[task.prependpath]$(TFVMDIR)/bin/shims'
+              
+     displayName: 'add tfvm path'
+   - script: | 
+              brew install shellcheck
+              brew install bats
+     displayName: 'Install dependencies'
+      
+   - script: bash -c 'shopt -s globstar; shellcheck ./bin/tfvm; shellcheck bash_completion'
+     displayName: 'Run shellcheck'
+
+   - script: 'bats ./tests/test.bats'  
+     displayName: 'Run tests'
+
