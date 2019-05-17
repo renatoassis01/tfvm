@@ -35,6 +35,7 @@ export PATH=$TFVMDIR/bin:$TFVMDIR/bin/shims:$PATH
 ```sh
 tfvm ls-remote                               # Lists the published version
 tfvm install 0.11.13                         # Install a specific version number
+tfvm install latest                          # Install last version published
 tfvm use latest                              # Use last version installed
 tfvm use 0.11.13                             # Use a version installed
 tfvm ls                                      # List all installed versions
@@ -100,13 +101,13 @@ Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 
 - [x] Basic version funcional
 - [x] Implement the option to use the latest version, using the `latest` (tfvm use latest) flag
-- [ ] Implement the option to install the latest version by using the `latest` (tfvm install latest) flag 
+- [x] Implement the option to install the latest version by using the `latest` (tfvm install latest) flag 
 - [x] Bash Completion
 - [x] Zsh Completion
 - [x] Test units
 - [x] CD/CI
 - [x] Suport OSX
-
+- []  verbose print commands 
 ## License
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
