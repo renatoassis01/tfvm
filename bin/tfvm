@@ -6,7 +6,7 @@ set \
 	-o pipefail \
 	-o errexit
 
-BASE_URL_TF='https://releases.hashicorp.com/terraform/'
+BASE_URL_TF='https://releases.hashicorp.com/terraform'
 VERSION_TFVM='0.4.0'
 STORE=""
 
@@ -46,9 +46,9 @@ ARCH_TFVM=$(tfvm_get_arch)
 function get_list_version_tf_remote() {
 
 	if [ -x "$(command -v curl)" ]; then
-		  STORE=$(curl -s $BASE_URL_TF  | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
+		STORE=$(curl -s "$BASE_URL_TF/" | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	elif [ -x "$(command -v wget)" ]; then
-	    STORE=$(curl -s $BASE_URL_TF  | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
+		STORE=$(curl -s "$BASE_URL_TF/" | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	else
 		echo "You not have curl or wget installed."
 	fi
@@ -74,17 +74,15 @@ function ls-local() {
 function use_tf() {
 	local latest
 	if [ "$1" == "latest" ]; then
-
 		latest=$(command ls -1 "$TFVMDIR/versions/" | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
-
 		if [ -n "$latest" ]; then
 
 			if [ -f "$TFVMDIR"/versions/"$latest"/terraform ]; then
 				if ! [ -d "$TFVMDIR/bin/shims/" ]; then
-					mkdir -p "$TFVMDIR/bin/shims/"
+					mkdir -p "${TFVMDIR:?}/bin/shims/"
 				fi
 				rm -rf "${TFVMDIR:?}/bin/shims/*"
-				cp -r "$TFVMDIR/versions/$latest/." "$TFVMDIR"/bin/shims
+				cp -r "$TFVMDIR/versions/$latest/." "${TFVMDIR:?}/bin/shims/"
 				echo "Activated Terraform version $latest"
 			fi
 		else
@@ -94,10 +92,10 @@ function use_tf() {
 
 		if [ -f "$TFVMDIR"/versions/"$1"/terraform ]; then
 			if ! [ -d "$TFVMDIR/bin/shims/" ]; then
-				mkdir -p "$TFVMDIR/bin/shims/"
+				mkdir -p "${TFVMDIR:?}/bin/shims/"
 			fi
 			rm -rf "${TFVMDIR:?}/bin/shims/*"
-			cp -r "$TFVMDIR/versions/$1/." "$TFVMDIR/bin/shims"
+			cp -r "$TFVMDIR/versions/$1/." "${TFVMDIR:?}/bin/shims/"
 			echo "Activated Terraform version $1"
 		else
 			echo "Version invalid or not installed".
@@ -107,54 +105,67 @@ function use_tf() {
 }
 
 function install_tf() {
-	local file_tf=terraform_${1}_${OS_TFVM}_${ARCH_TFVM}.zip
-	if [ -f "$TFVMDIR/versions/$1/terraform" ]; then
-		echo "Use: tfvm use $1"
-	else
-		for i in $STORE; do
-			if [ "$i" == "$1" ]; then
-			 echo $file_tf
-				if [ -x "$(command -v curl)" ]; then
-					echo "Downloading... $file_tf"
-					curl -# --progress-bar --url "$BASE_URL_TF$1/$file_tf" -o "$TFVMDIR/$file_tf"
-				elif [ -x "$(command -v wget)" ]; then
-					echo "Downloading... $file_tf"
-					wget -O "$TFVMDIR/$file_tf" "$BASE_URL_TF$1/$file_tf" -q --show-progress --progress=bar:force
-				else
-					echo "You not have curl or wget installed."
-					exit 1
-				fi
-				if [ -f "$TFVMDIR/$file_tf" ]; then
-					if ! [ -d "$TFVMDIR/versions/" ]; then
-						mkdir -p "$TFVMDIR/versions/"
-					fi
-					mkdir -p "$TFVMDIR/versions/$1/"
-					unzip "$TFVMDIR/$file_tf" -d "${TFVMDIR}/versions/$1/"
-					if [ -f "$TFVMDIR/$file_tf" ]; then
-						rm -rf "${TFVMDIR:?}/${file_tf:?}"
-					fi
-					echo "To activate this version use: "
-					echo "tfvm use $1"
-					exit 0
-				fi
-				break
+	local file_tf="terraform_${1}_${OS_TFVM}_${ARCH_TFVM}".zip
+	local install_version=$1
+	local TEMPFILE
+	local last_local
+	TEMPFILE=$(mktemp -d)
+	if [ "$1" == "latest" ]; then
+		last_local=$(command ls -1 "$TFVMDIR/versions/" | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
+		install_version=$(echo "$STORE" | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
+		file_tf="terraform_${install_version}_${OS_TFVM}_${ARCH_TFVM}".zip
+		if [ -n "$last_local" ]; then
+			if [ "$last_local" == "$install_version" ]; then
+				echo "Use: tfvm use $last_local"
+				exit
 			fi
-		done
-		echo "Version $1 invalid"!
-		echo "Use: tfvm ls-remote and install a version listed"
+		fi
+	elif [ -f "$TFVMDIR/versions/$1/terraform" ]; then
+		echo "Use: tfvm use $1"
+		exit
 	fi
+	for i in $STORE; do
+		if [ "$i" == "$install_version" ]; then
+
+			if [ -x "$(command -v curl)" ]; then
+				echo "Downloading... $file_tf"
+				curl -# --progress-bar --url "$BASE_URL_TF/$install_version/$file_tf" -o "$TEMPFILE/$file_tf"
+			elif [ -x "$(command -v wget)" ]; then
+				echo "Downloading... $file_tf"
+				wget -O "$TEMPFILE/$file_tf" "$BASE_URL_TF/$install_version/$file_tf" -q --show-progress --progress=bar:force
+			else
+				echo "You not have curl or wget installed."
+				exit 1
+			fi
+			if [ -f "$TEMPFILE/$file_tf" ]; then
+				if ! [ -d "$TFVMDIR/versions/" ]; then
+					mkdir -p "$TFVMDIR/versions/"
+				fi
+				mkdir -p "$TFVMDIR/versions/$install_version/"
+				unzip "$TEMPFILE/$file_tf" -d "${TFVMDIR}/versions/$install_version/"
+				echo "To activate this version use: "
+				echo "tfvm use $install_version"
+				exit 0
+			fi
+			break
+		fi
+	done
+	echo "Version $install_version invalid"!
+	echo "Use: tfvm ls-remote and install a version listed"
+
 }
 
 function usage() {
 
 	echo
-	echo -e "Usage: tfvm [ -v | --version] <command> [args]"
+	echo -e "Usage: tfvm [ -v | --version] <command> [args] [ --verbose ]"
 	echo
 	echo -e "Example:"
 	echo -e "       tfvm ls-remote                               Lists the published version"
 	echo -e "       tfvm install 0.11.13                         Install a specific version number"
 	echo -e "       tfvm use 0.11.13                             Use a version installed"
-	echo -e "       tfvm use latest                              Use last version installed"
+	echo -e "       tfvm install latest                          Install last version published"
+	echo -e "       tfvm use latest                              Use last version installed locally"
 	echo -e "       tfvm ls                                      List all installed versions"
 	echo -e "Note:"
 	echo -e "      to remove, delete, or uninstall tfvm - just remove the TFVMDIR folder (usually ~/.tfvm )"
@@ -162,6 +173,7 @@ function usage() {
 }
 
 while test $# -gt 0; do
+
 	case "$1" in
 	-v | --version)
 		shift
