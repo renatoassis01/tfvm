@@ -63,13 +63,13 @@ install    ls         ls-remote  use        -v         --version
 > $ tfvm install <kbd>Tab</kbd> <kbd>Tab</kbd> <kbd>Tab</kbd>
 
 ```
-0.11.11  0.11.12  0.11.13  
+ 0.11.12 0.11.13 0.11.14 latest  
 ```
 
 > $ tfvm use <kbd>Tab</kbd> <kbd>Tab</kbd> <kbd>Tab</kbd>
 
 ```
-0.10.0   0.11.13  latest  
+0.11.12 0.11.13 0.11.14 latest  
 ```
 
 Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
