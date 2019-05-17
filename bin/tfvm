@@ -82,7 +82,7 @@ function use_tf() {
 					mkdir -p "${TFVMDIR:?}/bin/shims/"
 				fi
 				rm -rf "${TFVMDIR:?}/bin/shims/*"
-				cp -r "$TFVMDIR/versions/$latest/." "${TFVMDIR:?}/bin/shims/"
+				cp -r "$TFVMDIR/versions/$latest/." "$TFVMDIR"/bin/shims
 				echo "Activated Terraform version $latest"
 			fi
 		else
@@ -95,7 +95,7 @@ function use_tf() {
 				mkdir -p "${TFVMDIR:?}/bin/shims/"
 			fi
 			rm -rf "${TFVMDIR:?}/bin/shims/*"
-			cp -r "$TFVMDIR/versions/$1/." "${TFVMDIR:?}/bin/shims/"
+			cp -r "$TFVMDIR/versions/$1/." "$TFVMDIR/bin/shims"
 			echo "Activated Terraform version $1"
 		else
 			echo "Version invalid or not installed".
