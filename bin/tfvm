@@ -6,8 +6,8 @@ set \
 	-o pipefail \
 	-o errexit
 
+VERSION_TFVM='0.5.2'
 BASE_URL_TF='https://releases.hashicorp.com/terraform'
-VERSION_TFVM='0.5.1'
 STORE=""
 
 if [ -z "$TFVMDIR" ]; then
@@ -44,11 +44,11 @@ OS_TFVM=$(tfvm_get_os)
 ARCH_TFVM=$(tfvm_get_arch)
 
 function get_list_version_tf_remote() {
-
+   
 	if [ -x "$(command -v curl)" ]; then
 		STORE=$(curl -s "$BASE_URL_TF/" | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	elif [ -x "$(command -v wget)" ]; then
-		STORE=$(curl -s "$BASE_URL_TF/" | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
+		STORE=$(wget -qO - "$BASE_URL_TF/" | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	else
 		echo "You not have curl or wget installed."
 	fi
@@ -157,19 +157,21 @@ function install_tf() {
 
 function usage() {
 
-	echo
-	echo -e "Usage: tfvm [ -v | --version] <command> [args] [ --verbose ]"
-	echo
-	echo -e "Example:"
-	echo -e "       tfvm ls-remote                               Lists the published version"
-	echo -e "       tfvm install 0.11.13                         Install a specific version number"
-	echo -e "       tfvm use 0.11.13                             Use a version installed"
-	echo -e "       tfvm install latest                          Install last version published"
-	echo -e "       tfvm use latest                              Use last version installed locally"
-	echo -e "       tfvm ls                                      List all installed versions"
-	echo -e "Note:"
-	echo -e "      to remove, delete, or uninstall tfvm - just remove the TFVMDIR folder (usually ~/.tfvm )"
-	echo
+	cat <<-EOF 
+	
+	Usage: tfvm [ -v | --version] <command> [args] 
+	
+	Example:
+	       tfvm ls-remote                               Lists the published version
+	       tfvm install 0.11.13                         Install a specific version number
+	       tfvm use 0.11.13                             Use a version installed
+	       tfvm install latest                          Install last version published
+	       tfvm use latest                              Use last version installed locally
+	       tfvm ls                                      List all installed versions
+	Note:
+	      to remove, delete, or uninstall tfvm - just remove the TFVMDIR folder (usually ~/.tfvm )
+	
+EOF
 }
 
 while test $# -gt 0; do

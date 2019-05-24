@@ -80,7 +80,7 @@ Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
    Dependencies: 
    
    - shellcheck: [Shell script analysis tool](https://www.shellcheck.net/) 
-   - Bats: [Bash Automated Testing System](https://github.com/sstephenson/bats)
+   - Bats: [Bash Automated Testing System](https://github.com/bats-core/bats-core)
 
    
    run shellcheck:
