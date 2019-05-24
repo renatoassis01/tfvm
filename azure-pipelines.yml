@@ -18,9 +18,9 @@ jobs:
               
      displayName: 'add tfvm'
    - script: | 
-             wget https://github.com/sstephenson/bats/archive/v0.4.0.zip -O /tmp/bats.zip
+             wget https://github.com/bats-core/bats-core/archive/v1.1.0.zip -O /tmp/bats.zip
              unzip /tmp/bats.zip -d /tmp
-             mv /tmp/bats-0.4.0 /tmp/bats
+             mv /tmp/bats-core-1.1.0 /tmp/bats
      displayName: 'Install bats'
    
    - script: $(bats) -v  
