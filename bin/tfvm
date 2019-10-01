@@ -6,7 +6,7 @@ set \
 	-o pipefail \
 	-o errexit
 
-VERSION_TFVM='0.5.2'
+VERSION_TFVM='0.6.2'
 BASE_URL_TF='https://releases.hashicorp.com/terraform'
 STORE=""
 
@@ -44,7 +44,7 @@ OS_TFVM=$(tfvm_get_os)
 ARCH_TFVM=$(tfvm_get_arch)
 
 function get_list_version_tf_remote() {
-   
+
 	if [ -x "$(command -v curl)" ]; then
 		STORE=$(curl -s "$BASE_URL_TF/" | grep -Eo 'href="[^\"]+"' | awk -F "/" '{print $3}' | grep -E ".*-beta.*|.*-alpha.*|.*-rc.*|^[0-9\.]")
 	elif [ -x "$(command -v wget)" ]; then
@@ -103,6 +103,17 @@ function use_tf() {
 		fi
 	fi
 }
+function clear_versions() {
+	lines="$(command find "$TFVMDIR/versions/" -maxdepth 1 | wc -l )"
+	if [ -d "$TFVMDIR/versions/" ]; then
+		if [ $((lines)) -gt 1 ]; then
+	       command find "${TFVMDIR:?}/versions/" -maxdepth 1 | xargs rm -rfv
+		   mkdir -p "$TFVMDIR/versions/" 
+		   exit  
+		fi
+	fi
+	echo "You not have versions installed."
+}
 
 function install_tf() {
 	local file_tf="terraform_${1}_${OS_TFVM}_${ARCH_TFVM}".zip
@@ -111,12 +122,12 @@ function install_tf() {
 	local last_local
 	TEMPFILE=$(mktemp -d)
 	if [ "$1" == "latest" ]; then
-		last_local=$(command ls -1 "$TFVMDIR/versions/" | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
+		last_local="$(command find "$TFVMDIR/versions/" -maxdepth 1 | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)"
 		install_version=$(echo "$STORE" | sort -V | grep -Ev ".*-beta.*|.*-alpha.*|.*-rc.*" | tail -1)
 		file_tf="terraform_${install_version}_${OS_TFVM}_${ARCH_TFVM}".zip
 		if [ -n "$last_local" ]; then
-			if [ "$last_local" == "$install_version" ]; then
-				echo "Use: tfvm use $last_local"
+			if [  "$(basename "$last_local")" == "$install_version" ]; then
+				echo "Use: tfvm use" "$(basename "$last_local")" 
 				exit
 			fi
 		fi
@@ -157,21 +168,24 @@ function install_tf() {
 
 function usage() {
 
-	cat <<-EOF 
-	
-	Usage: tfvm [ -v | --version] <command> [args] 
-	
-	Example:
-	       tfvm ls-remote                               Lists the published version
-	       tfvm install 0.11.13                         Install a specific version number
-	       tfvm use 0.11.13                             Use a version installed
-	       tfvm install latest                          Install last version published
-	       tfvm use latest                              Use last version installed locally
-	       tfvm ls                                      List all installed versions
-	Note:
-	      to remove, delete, or uninstall tfvm - just remove the TFVMDIR folder (usually ~/.tfvm )
-	
-EOF
+	cat <<-EOF
+		
+		Usage: tfvm [ -v | --version] <command> [args] 
+		
+		Example:
+
+		       tfvm ls-remote                               Lists the published version
+		       tfvm install 0.11.13                         Install a specific version number
+		       tfvm use 0.11.13                             Use a version installed
+		       tfvm install latest                          Install last version published
+		       tfvm use latest                              Use last version installed locally
+		       tfvm ls                                      List all installed versions
+		       tfvm clear                                   Clear all installed versions except enabled version
+		
+		Note:
+		      to remove, delete, or uninstall tfvm - just remove the TFVMDIR folder (usually ~/.tfvm )
+		
+	EOF
 }
 
 while test $# -gt 0; do
@@ -204,6 +218,10 @@ while test $# -gt 0; do
 
 		elif [ "$1" == "ls" ]; then
 			ls-local
+			exit 0
+
+		elif [ "$1" == "clear" ]; then
+		    clear_versions
 			exit 0
 
 		else
