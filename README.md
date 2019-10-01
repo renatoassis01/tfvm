@@ -39,6 +39,7 @@ tfvm install latest                          # Install last version published
 tfvm use latest                              # Use last version installed
 tfvm use 0.11.13                             # Use a version installed
 tfvm ls                                      # List all installed versions
+tfvm clear                                   # Clear all installed versions except enabled version
 ```                                     
 
 
@@ -95,6 +96,8 @@ Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
    ```sh
      bats ./tests/test.bats
    ```
+  
+  Submit your pull request
 
 
 ### Todo
@@ -107,7 +110,7 @@ Inspired by [Node Version Manager - nvm](https://github.com/nvm-sh/nvm)
 - [x] Test units
 - [x] CD/CI
 - [x] Suport OSX
-- []  verbose print commands 
+- [x] Clear all installed versions
 ## License
 
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
