@@ -49,6 +49,6 @@ tf_version_invalid=0.0.0
 
 @test "testing function clear" {
   tfvm clear
-  lines="$(command find "$TFVMDIR/versions/" -maxdepth 1 | wc -l | bc)"
+  lines="$(command find "$TFVMDIR/versions/" -maxdepth 1 | wc -l)"
   [ "$lines" -eq 1  ]
 }

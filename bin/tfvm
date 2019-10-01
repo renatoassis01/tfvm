@@ -104,7 +104,7 @@ function use_tf() {
 	fi
 }
 function clear_versions() {
-	lines="$(command find "$TFVMDIR/versions/" -maxdepth 1 | wc -l | bc)"
+	lines="$(command find "$TFVMDIR/versions/" -maxdepth 1 | wc -l )"
 	if [ -d "$TFVMDIR/versions/" ]; then
 		if [ $((lines)) -gt 1 ]; then
 	       command find "${TFVMDIR:?}/versions/" -maxdepth 1 | tail +2 | xargs rm -rfv
