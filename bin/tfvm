@@ -107,7 +107,8 @@ function clear_versions() {
 	lines="$(command find "$TFVMDIR/versions/" -maxdepth 1 | wc -l )"
 	if [ -d "$TFVMDIR/versions/" ]; then
 		if [ $((lines)) -gt 1 ]; then
-	       command find "${TFVMDIR:?}/versions/" -maxdepth 1 | tail +2 | xargs rm -rfv
+	       command find "${TFVMDIR:?}/versions/" -maxdepth 1 | xargs rm -rfv
+		   mkdir -p "$TFVMDIR/versions/" 
 		   exit  
 		fi
 	fi
