@@ -6,7 +6,7 @@ set \
 	-o pipefail \
 	-o errexit
 
-VERSION_TFVM='0.5.2'
+VERSION_TFVM='0.6.2'
 BASE_URL_TF='https://releases.hashicorp.com/terraform'
 STORE=""
 
